@@ -4,3 +4,6 @@ Licenses: LGPL 2.1 or later (see LICENSE.LGPL-2.1)
       or  BSD-new           (see LICENSE.BSD-new)
 
 "You are free to use the LGPL license [...] or the BSD license"
+
++ added ICACHE_FLASH_ATTR to compile for esp8266
++ added support for floating point variables
