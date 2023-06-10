@@ -19,7 +19,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-#include <esp8266.h>
+/* I'm not really sure which of these are needed
+ * the main problem is that ets_sys.h is in a different folder
+ * so I can't just include esp8266.h */
+#include "rom/ets_sys.h"
+#include "esp8266/eagle_soc.h"
+#include "esp8266/gpio_register.h" 
+#include "esp8266/pin_mux_register.h" 
+#include "esp8266/spi_register.h" 
+#include "esp8266/timer_register.h" 
+#include "esp8266/uart_register.h" 
+#include "esp_attr.h"
 
 #include "tinyprintf.h"
 
@@ -184,7 +194,7 @@ static int a2d(char ch) {
 }
 
 ICACHE_FLASH_ATTR
-static char a2u(char ch, const char **src, int base, unsigned int *nump) {
+static char a2u(char ch, const char **src, int base, int *nump) {
   const char *p = *src;
   unsigned int num = 0;
   int digit;
@@ -394,6 +404,7 @@ void tfp_format(void *putp, putcf putf, const char *fmt, va_list va) {
         lng = 2;
 #endif
 #endif
+        // fall through
       case 'x':
       case 'X':
         p.base = 16;
@@ -772,7 +783,7 @@ int tfp_vsscanf(const char *str, const char *format, ...) {
 
       case 's':
         pos = 0;
-        char *tab = va_arg(ap, char **);
+        char *tab = va_arg(ap, char *);
         while (*str != ' ' && *str != 0)
           *(tab++) = *str++;
         *tab = 0;
